@@ -112,6 +112,23 @@ ul li {margin-bottom:0.5rem; text-align:left;}
   box-shadow: 0 0 15px #00ffff, 0 0 25px #00cfff, 0 0 35px #00ffff;
 }
 
+/* Toast styles */
+#toast {
+  position: fixed;
+  top:20px;
+  left:50%;
+  transform: translateX(-50%);
+  background: rgba(0,255,255,0.9);
+  color: #000;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  font-weight:bold;
+  font-family: 'Times New Roman', serif;
+  z-index: 9999;
+  display:none;
+  text-align:center;
+}
+
 @media (max-width:640px){
   .card { padding:1.5rem; margin:1.5rem auto;}
   h1 { font-size:1.6rem;}
@@ -146,11 +163,11 @@ ul li {margin-bottom:0.5rem; text-align:left;}
     <!-- Social Media -->
     <h2>Connect with Me</h2>
     <div class="social-icons">
-      <a href="https://www.facebook.com/share/19tExoVmkH/" target="_blank">
+      <a href="https://www.facebook.com/share/19tExoVmkH/" class="social-link" data-platform="facebook" target="_blank">
         <img src="icon-facebook.png" alt="Facebook">
         <span>Facebook</span>
       </a>
-      <a href="https://www.instagram.com/m.rafiulislam.9?igsh=YzljYTk1ODg3Zg==" target="_blank">
+      <a href="https://www.instagram.com/m.rafiulislam.9?igsh=YzljYTk1ODg3Zg==" class="social-link" data-platform="instagram" target="_blank">
         <img src="2227.jpg" alt="Instagram">
         <span>Instagram</span>
       </a>
@@ -189,6 +206,9 @@ ul li {margin-bottom:0.5rem; text-align:left;}
 
   </div>
 </div>
+
+<!-- Toast -->
+<div id="toast"></div>
 
 <script>
 // Show full profile on button click
@@ -269,6 +289,50 @@ function draw(){
   requestAnimationFrame(draw);
 }
 draw();
+
+// === Social Media Welcome Messages ===
+const fbMessages = [
+  "Welcome to my FB world! 🎉","Hey there! Ready for some FB fun? 😎","FB party incoming! 🚀",
+  "Hello! Enjoy the FB vibes! 🌟","Smile! FB journey starts now! 😁","Cheers! FB adventure begins! 🥳",
+  "FB magic just for you! ✨","Surprise! FB fun awaits! 🎈","Welcome to the FB land! 🌍","Get ready to scroll & smile! 😊",
+  "FB fun loading... 🔄","Enter the FB zone! 🎯","Hi friend! FB greetings! 🖐️","FB vibes activated! ⚡",
+  "Welcome aboard FB ship! 🚢","FB happiness incoming! 💫","Let’s FB and chill! 🛋️","Ready to FB explore? 🔍",
+  "FB fun time! 🎊","Welcome to the FB universe! 🌌"
+];
+const instaMessages = [
+  "Woohoo! Insta vibes incoming! 😎","Hello! Welcome to my Insta! 🌈","Insta magic just for you! ✨",
+  "Smile! Insta fun ahead! 😁","Ready to explore Insta? 📸","Hi! Insta world says hello! 👋","Cheers! Insta adventure starts! 🥳",
+  "Surprise! Insta fun awaits! 🎉","Welcome to the Insta zone! 🌟","Insta party time! 🎊","Tap & enjoy Insta vibes! 🚀",
+  "Insta happiness incoming! 💫","Hello Insta explorer! 🔍","Insta magic loading... 🔄","Insta journey begins now! 🌍",
+  "Insta joy is here! 😍","Ready for Insta scroll? 📱","Insta fun level UP! ⚡","Smile! Insta adventure! 🌈","Welcome to my Insta universe! 🌌"
+];
+
+let fbIndex = 0;
+let instaIndex = 0;
+const toast = document.getElementById("toast");
+
+document.querySelectorAll(".social-link").forEach(link=>{
+  link.addEventListener("click", e=>{
+    e.preventDefault();
+    let platform = link.getAttribute("data-platform");
+    let message = platform==="facebook"? fbMessages[fbIndex] : instaMessages[instaIndex];
+    
+    toast.textContent = message;
+    toast.style.display = "block";
+    
+    setTimeout(()=>{
+      toast.style.display = "none";
+      window.open(link.href,"_blank");
+    },1500); // 1.5s toast duration
+    
+    // Increment index
+    if(platform==="facebook"){
+      fbIndex = (fbIndex+1)%fbMessages.length;
+    } else {
+      instaIndex = (instaIndex+1)%instaMessages.length;
+    }
+  });
+});
 </script>
 
 </body>
