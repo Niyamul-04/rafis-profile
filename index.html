@@ -251,86 +251,104 @@ function draw(){
       let dx = particles[i].x - particles[j].x;
       let dy = particles[i].y - particles[j].y;
       let dist = Math.sqrt(dx*dx + dy*dy);
-      if(dist<120){
+      if(dist<100){
+        ctx.strokeStyle='rgba(0,255,255,'+(1-dist/100)*0.3+')';
+        ctx.lineWidth=1;
         ctx.beginPath();
-        ctx.strokeStyle=`rgba(0,255,255,${1-dist/120})`;
-        ctx.lineWidth=0.5;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
         ctx.stroke();
       }
     }
   }
+
   for(let p of particles){
     ctx.beginPath();
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(0,255,255,${p.alpha})`;
-    ctx.shadowBlur = 6;
-    ctx.shadowColor = "rgba(255,0,255,0.5)";
+    ctx.fillStyle='rgba(0,255,255,'+p.alpha+')';
     ctx.fill();
-    ctx.shadowBlur = 0;
 
-    let dx = mouse.x - p.x;
-    let dy = mouse.y - p.y;
-    let dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist < mouse.radius){
-      let angle = Math.atan2(dy, dx);
-      p.x -= Math.cos(angle)*1.5;
-      p.y -= Math.sin(angle)*1.5;
-    }
-
+    // Update
+    p.x += p.dx; p.y += p.dy;
+    if(p.x>w||p.x<0) p.dx*=-1;
+    if(p.y>h||p.y<0) p.dy*=-1;
     p.alpha += p.pulse;
-    if(p.alpha>0.9 || p.alpha<0.2) p.pulse*=-1;
-    p.x += p.dx;
-    p.y += p.dy;
-    if(p.x<0||p.x>w) p.dx*=-1;
-    if(p.y<0||p.y>h) p.dy*=-1;
+    if(p.alpha>0.8||p.alpha<0.2) p.pulse*=-1;
   }
+
   requestAnimationFrame(draw);
 }
 draw();
 
-// === Social Media Welcome Messages ===
+// === Track User Visit ===
+let visitCount = localStorage.getItem("userVisitCount") || 0;
+visitCount = parseInt(visitCount) + 1;
+localStorage.setItem("userVisitCount", visitCount);
+
+// === 20 Facebook Messages ===
 const fbMessages = [
-  "Welcome to my FB world! 🎉","Hey there! Ready for some FB fun? 😎","FB party incoming! 🚀",
-  "Hello! Enjoy the FB vibes! 🌟","Smile! FB journey starts now! 😁","Cheers! FB adventure begins! 🥳",
-  "FB magic just for you! ✨","Surprise! FB fun awaits! 🎈","Welcome to the FB land! 🌍","Get ready to scroll & smile! 😊",
-  "FB fun loading... 🔄","Enter the FB zone! 🎯","Hi friend! FB greetings! 🖐️","FB vibes activated! ⚡",
-  "Welcome aboard FB ship! 🚢","FB happiness incoming! 💫","Let’s FB and chill! 🛋️","Ready to FB explore? 🔍",
-  "FB fun time! 🎊","Welcome to the FB universe! 🌌"
+  "Assalamu Alaikum! Welcome to Facebook 🌸",
+  "May Allah bless your day with happiness 🤲",
+  "Keep smiling, enjoy your FB time 😊",
+  "May Allah make your tasks easy 🌿",
+  "Stay positive, spread kindness on FB 🌼",
+  "Sending duas for you 🌙",
+  "May Allah keep you healthy and safe 💚",
+  "Discover something good today on FB 📘",
+  "Share smiles, stay cheerful 😃",
+  "May Allah protect you always ✨",
+  "Peace and blessings be upon you 🤍",
+  "Use FB with good manners 🌟",
+  "Stay under Allah’s mercy 🌺",
+  "Stay happy, keep making dua 🙏",
+  "May Allah increase you in knowledge 📖",
+  "Spend your FB time with goodness 🌸",
+  "May Allah grant you success 🏆",
+  "Think good, live well 🌿",
+  "May Allah invite you to Jannah 🌹",
+  "Greet others with Salam, spread peace 😇"
 ];
+
+// === 20 Instagram Messages ===
 const instaMessages = [
-  "Woohoo! Insta vibes incoming! 😎","Hello! Welcome to my Insta! 🌈","Insta magic just for you! ✨",
-  "Smile! Insta fun ahead! 😁","Ready to explore Insta? 📸","Hi! Insta world says hello! 👋","Cheers! Insta adventure starts! 🥳",
-  "Surprise! Insta fun awaits! 🎉","Welcome to the Insta zone! 🌟","Insta party time! 🎊","Tap & enjoy Insta vibes! 🚀",
-  "Insta happiness incoming! 💫","Hello Insta explorer! 🔍","Insta magic loading... 🔄","Insta journey begins now! 🌍",
-  "Insta joy is here! 😍","Ready for Insta scroll? 📱","Insta fun level UP! ⚡","Smile! Insta adventure! 🌈","Welcome to my Insta universe! 🌌"
+  "Assalamu Alaikum! Welcome to Instagram 🌸",
+  "Alhamdulillah you visited Insta, stay blessed 🤲",
+  "May Allah increase your rizq 🌿",
+  "Share smiles, not just pictures 😊",
+  "May Allah accept your duas 🌙",
+  "Have a joyful Insta journey 🎉",
+  "May Allah shower His blessings on you 🌺",
+  "Stay happy and peaceful on Insta 🌼",
+  "May Allah accept your good deeds 🤍",
+  "Spread peace and kindness on Insta ✨",
+  "Smile and spread love 😃",
+  "May Allah remove your worries 🌟",
+  "Dua for you: May Insta bring joy 🙏",
+  "May Allah keep you on the straight path 🌹",
+  "Enjoy Insta with barakah 🕊️",
+  "Keep remembering Allah 📿",
+  "Find peace in your Insta moments 🌿",
+  "May Allah grant you success here and hereafter 🏆",
+  "Give smiles, take duas 😇",
+  "May Allah’s mercy fill your Insta time 💫"
 ];
 
-let fbIndex = 0;
-let instaIndex = 0;
-const toast = document.getElementById("toast");
+let fbIndex = (visitCount - 1) % fbMessages.length;
+let instaIndex = (visitCount - 1) % instaMessages.length;
 
+// Toast Logic
+const toast = document.getElementById("toast");
 document.querySelectorAll(".social-link").forEach(link=>{
   link.addEventListener("click", e=>{
     e.preventDefault();
     let platform = link.getAttribute("data-platform");
     let message = platform==="facebook"? fbMessages[fbIndex] : instaMessages[instaIndex];
-    
     toast.textContent = message;
     toast.style.display = "block";
-    
     setTimeout(()=>{
-      toast.style.display = "none";
+      toast.style.display="none";
       window.open(link.href,"_blank");
-    },1500); // 1.5s toast duration
-    
-    // Increment index
-    if(platform==="facebook"){
-      fbIndex = (fbIndex+1)%fbMessages.length;
-    } else {
-      instaIndex = (instaIndex+1)%instaMessages.length;
-    }
+    },1500);
   });
 });
 </script>
