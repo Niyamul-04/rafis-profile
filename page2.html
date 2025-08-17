@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Md Rafiul Islam - Full Profile</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  overflow:hidden;
+  background: radial-gradient(circle at top, #0b0b0f, #1a1a28 90%);
+  color:white;
+}
+canvas {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:-2;
+}
+.card {
+  backdrop-blur: blur(12px);
+  background: rgba(20,20,30,0.7);
+  border: 1px solid #333;
+  border-radius: 2rem;
+  box-shadow: 0 0 50px rgba(0,255,255,0.3);
+  padding:2rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 70px rgba(0,255,255,0.5);
+}
+
+.btn {
+  display:inline-block;
+  padding:0.7rem 1.8rem;
+  background: #00cfff;
+  border-radius:9999px;
+  font-weight:600;
+  color:white;
+  transition: transform 0.2s, background 0.3s;
+}
+.btn:hover {
+  transform: scale(1.05);
+  background:#00a8d4;
+}
+
+ul li { margin-bottom:0.5rem; }
+</style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 relative">
+
+<canvas id="particles"></canvas>
+
+<div class="w-full max-w-lg card relative z-10 space-y-6 text-white">
+  <h1 class="text-3xl font-bold text-cyan-400 text-center">Md Rafiul Islam</h1>
+  <div class="flex justify-center mb-4">
+    <img src="rr.jpg" alt="Md Rafiul Islam" class="w-40 h-40 rounded-full border-4 border-cyan-500 shadow-lg object-cover">
+  </div>
+
+  <h2 class="text-xl font-semibold text-cyan-300">Personal Information</h2>
+  <ul class="list-disc pl-5">
+    <li>Full Name: Md Rafiul Islam</li>
+    <li>Nickname: Rafiul</li>
+    <li>Profession: Civil Engineer (SR Commercial Executive Officer, Edison Group)</li>
+    <li>Birthday: 1/11/1995</li>
+    <li>Eyes: Black | Hair: Black</li>
+    <li>Height: 5'-10" | Weight: 72kg | Blood: A+ (Regular Donor)</li>
+    <li>Fav Colour: Blue/White | Fav Food: Mar hate banano j kono khabar</li>
+    <li>Fav Game: Cricket/Football/Badminton | Rightly: Right</li>
+    <li>Callphone: SONY / Symphony / LG Velvet</li>
+    <li>Friends: Onak So Bolla Shes Kora Possible Na</li>
+    <li>Fav Person: Mother | Respect Person: Amar boro sobai</li>
+  </ul>
+
+  <h2 class="text-xl font-semibold text-cyan-300">Social Links</h2>
+  <div class="flex justify-center space-x-6 mt-2">
+    <a href="https://www.facebook.com/share/19tExoVmkH/" target="_blank" class="btn">
+      Facebook
+    </a>
+    <a href="https://www.instagram.com/m.rafiulislam.9?igsh=YzljYTk1ODg3Zg==" target="_blank" class="btn">
+      Instagram
+    </a>
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="index.html" class="btn">Back to Profile</a>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w,h;
+function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight;}
+window.addEventListener('resize', resize);
+resize();
+
+const particles=[];
+const particleCount = window.innerWidth<768?80:180;
+for(let i=0;i<particleCount;i++){
+  particles.push({
+    x: Math.random()*w,
+    y: Math.random()*h,
+    r: Math.random()*2+1,
+    dx:(Math.random()-0.5)*1.2,
+    dy:(Math.random()-0.5)*1.2,
+    alpha: Math.random()*0.5+0.2,
+    pulse: Math.random()*0.02+0.01
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,w,h);
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      let dx = particles[i].x - particles[j].x;
+      let dy = particles[i].y - particles[j].y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist<120){
+        ctx.beginPath();
+        ctx.strokeStyle=`rgba(0,255,255,${1-dist/120})`;
+        ctx.lineWidth=0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  for(let p of particles){
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,255,255,${p.alpha})`;
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = "rgba(255,0,255,0.5)";
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    p.alpha += p.pulse;
+    if(p.alpha>0.9 || p.alpha<0.2) p.pulse*=-1;
+    p.x += p.dx;
+    p.y += p.dy;
+    if(p.x<0||p.x>w) p.dx*=-1;
+    if(p.y<0||p.y>h) p.dy*=-1;
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
